@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Movie Detail</title>
+</head>
+<body>
+<div class="d-flex flex-column justify-content-between">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">MovieRating</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><strong class="text-black">Details</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/search">Search</a>
+                </li>
+            </ul>
+            <form method="post" th:action="findByTitle" class="form-inline my-2 my-lg-0">
+                <div class="d-flex justify-content-around sp">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Starts here..." aria-label="Search" name="title">
+                    <button class="btn btn-outline-success my-2 my-sm-0 ml-3" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </nav>
+
+    <div th:if="${movie != null}" class="container">
+        <div class="card col-lg-12 mt-3">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${movie.title}"></h5>
+                <h6 class="card-subtitle mb-2 text-muted" th:text="${movie.starRating}">Rating: </h6>
+                <p class="card-text" th:text="${movie.yearOfRelease}">Year of release: </p>
+                <a href="#addReview" class="card-link btn btn-primary">Add a comment</a>
+            </div>
+        </div>
+        <div th:if="${reviewList.size() > 0}" class="card col-lg-12 mt-3" th:each="r : ${reviewList}">
+            <div class="card-body">
+                <h5 class="card-title"><span class="text-warning" th:text="${r.star}"></span>/10 <span th:text="${r.reviewTitle}"></span></h5>
+                <h6 class="card-subtitle mb-2 text-muted">Author: <span th:text="${r.reviewAuthor}"></span></h6>
+                <p class="card-text"><span th:text="${r.reviewContent}"></span></p>
+                <a href="#addReview">Write your review</a>
+            </div>
+        </div>
+        <div class="card col-lg-12 mt-3" id="addReview">
+            <div class="card-body">
+                <h6 class="card-subtitle">Your Review</h6>
+                <form method="post" th:action="@{/addReview}" th:object="${review}">
+                    <input type="hidden" th:field="*{id}"/>
+                    Author:<input class="m-2" type="text" th:field="*{reviewAuthor}"/><br>
+                    Title:<input class="m-2" type="text" th:field="*{reviewTitle}"/><br>
+                    Star:<input class="m-2" type="number" max="10" min="1" step="1" th:field="*{star}"/><br>
+                    <textarea style="width: 100%" class="my-2" placeholder="Your review content..." th:field="*{reviewContent}"></textarea><br>
+                    <input type="hidden" name="movie_id" th:value="*{movie.id}"/>
+                    <input class="btn btn-primary" type="submit" value="Submit"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:if="${movie == null}" class="container">
+        <div class="card col-lg-12 mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Movie Not Found</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Please try to search again from top right corner.</h6>
+                <p class="card-text">Or:</p>
+                <a href="/" class="card-link">Main Page</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-3">PROG39599 Assignment 1 Yiyao Zhang</footer>
+</div>
+</body>
+</html>

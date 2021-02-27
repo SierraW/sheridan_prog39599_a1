@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Movie Rating</title>
+</head>
+<body>
+<div class="d-flex flex-column justify-content-between">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">MovieRating</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/"><strong class="text-black">Home</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/search">Search</a>
+                </li>
+            </ul>
+            <form method="post" th:action="findByTitle" class="form-inline my-2 my-lg-0">
+                <div class="d-flex justify-content-around sp">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Starts here..." aria-label="Search" name="title">
+                    <button class="btn btn-outline-success my-2 my-sm-0 ml-3" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </nav>
+
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th scope="col"><a href="/orderByStarRating">Star</a></th>
+            <th scope="col"><a href="/orderByTitle">Title</a></th>
+            <th scope="col"><a href="/orderByYearOfRelease">Year</a></th>
+            <th scope="col">Streaming Service</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="movie : ${movieList}">
+            <th scope="row" th:text="${movie.starRating}">1</th>
+            <td><a th:href="@{details/{movie_id}(movie_id=${movie.id})}" th:text="${movie.title}"></a></td>
+            <td th:text="${movie.yearOfRelease}">2</td>
+            <td><a th:if="${movie.uri != null}" th:href="${movie.uri}">Where to find</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <footer class="mt-3">PROG39599 Assignment 1 Yiyao Zhang</footer>
+</div>
+</body>
+</html>
